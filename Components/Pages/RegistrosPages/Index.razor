@@ -1,38 +1,119 @@
-﻿@page "/Registro/Index"
+﻿@page "/Prestamos/Index"
 @rendermode InteractiveServer
+@inject PrestamoService prestamoService
 @inject NavigationManager navigation
 
-<PageTitle>Registro</PageTitle>
+<PageTitle>Prestamos</PageTitle>
 <div class="container">
 	<div class="card shadow-lg">
 
 		<div class="card-header">
-			<h5 class="card-title">Registro</h5>
+			<h5 class="card-title">Prestamo</h5>
 		</div>
 		<div class="card-body">
-			<a href="#" class="btn btn-primary"	<span class=" bi bi-plus-square-fill mt-3"></span> Crear</a>
+			<div class="row">
+				<div class="col-md-3">
+					<InputSelect id="filtro" class="form-select" @bind-Value="Filtro"> </InputSelect>
+				</div>
+
+				<div class="col-md-3 d-flex align-items-end">
+					<div class="input-group">
+						<InputText id="busqueda" class="form-control" @bind-Value="ValorFiltro"/>
+						<button @onclick="Buscar" class="btn btn-outline-primary bi bi-search" placeholder="Buscar">  Buscar</button>
+					</div>
+
+				</div>
+
+			</div>
+			<a href="#" class="btn btn-primary"	<span class=" bi bi-plus-square mt-3"></span> Crear</a>
 			<table class="table table-dark table-hover">
 				<thead class="table table-striped ">
-					<tr>
+					<tr class="text-center">
+						@*PrestamoId*@
+						<th class="text-lg-start"> ID</th>
+						@*Deudor*@
+						<th>Deudor</th>
+						@*Concepto*@
+						<th>Concepto</th>
+						@*Monto*@
+						<th>Monto</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="text-center">
-						<a href="#"
-						   class="btn btn-primary">
-							<span class="bi bi-plus-square mt-3"></span> Crear
-						</a>
-						<td class="text-center">
-							<a href="#" class="btn bi bi-eye"></a>
-						</td>
-						<td class="text-center">
-							<a href="#" class="btn bi bi-pencil-square"></a>
-						</td>
-						<td class="text-center">
-							<a href="#" class="btn bi bi-trash"></a>
-						</td>
+					@foreach(var prestamo in Prestamo)
+					{
+						<tr class="text-center">
+							@*ID*@
+							<td class="text-lg-start"> @prestamo.PrestamoId</td>
+							@*Deudor*@
+							<td>@prestamo.Deudor</td>
+							@*Concepto*@
+							<td>@prestamo.Concepto</td>
+							@*Monto*@
+							<td>@prestamo.Monto</td>
+							<td>Ver</td>
+							<td>Editar</td>
+							<td>Eliminar</td>
 
-						<a href="#"
+							<td>
+								<a href="#" class="btn btn-outline-light bi bi-eye"></a>
+							</td>
+							<td>
+								<a href="#" class="btn btn-outline-light bi bi-pencil-square"></a>
+							</td>
+							<td>
+								<a href="#" class="btn btn-outline-light bi bi-trash"></a>
+							</td>
+
+						</tr>
+					}
+				</tbody>
+
+			</table>
+		</div>
+
+	</div>
+</div>
+@code {
+	public int PrestamoId{ get; set; }
+	public List<Prestamos> Prestamo = new List<Prestamos>();
+	public string Filtro = "id";
+	public string ValorFiltro = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		Prestamo = await prestamoService.Listar(o => true);
+	}
+
+	public async Task Buscar()
+	{
+		switch (Filtro)
+		{
+			case "id" :
+				if(int.TryParse(ValorFiltro, out int id))
+				{
+					Prestamo = await prestamoService.Listar(o => o.PrestamoId == id);
+				}
+				break;
+			case "deudor":
+				Prestamo = await prestamoService.Listar(o => o.Deudor.ToLower().Equals(ValorFiltro.ToLower()));
+				break;
+			case "concepto" :
+				Prestamo = await prestamoService.Listar(o => o.Concepto.ToLower().Equals(ValorFiltro.ToLower()));
+				break;
+			case "monto" :
+				if (float.TryParse(ValorFiltro, out float monto))
+				{
+					Prestamo = await prestamoService.Listar(o => o.Monto == monto);
+				}
+				break;
+		}
+	}
+
+}
+
+						   @*
+							   						<a href="#"
 						   class="btn btn-primary">
 							<span class="bi bi-floppy mt-3"></span> Guardar
 						</a>
@@ -40,16 +121,7 @@
 						   class="btn btn-primary">
 							<span class="bi bi-arrow-left mt-3"></span> Volver
 						</a>
-					</tr>
-				</tbody>
 
-			</table>
+								<div class="card-footer">
 		</div>
-		<div class="card-footer">
-		</div>
-
-	</div>
-</div>
-@code {
-
-}
+						   *@
