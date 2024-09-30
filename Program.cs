@@ -1,5 +1,6 @@
 using CelainyLopez_Ap1_P1.Components;
 using CelainyLopez_Ap1_P1.DAL;
+using CelainyLopez_Ap1_P1.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddRazorComponents()
 
 var ConStr = builder.Configuration.GetConnectionString("ConStr");
 builder.Services.AddDbContext<Context>(o => o.UseSqlite(ConStr));
+
+builder.Services.AddScoped<PrestamoService>();
 
 var app = builder.Build();
 
