@@ -21,15 +21,15 @@ namespace CelainyLopez_Ap1_P1.Migrations
 
             modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Registros", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PrestamoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Nombres")
+                    b.Property<string>("Deudor")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("PrestamoId");
 
                     b.ToTable("Registros");
                 });
