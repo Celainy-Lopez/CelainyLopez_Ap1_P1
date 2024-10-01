@@ -7,13 +7,18 @@
 <div class="container">
 	<div class="card shadow-lg">
 
-		<div class="card-header">
+		<div class="card-header text-center">
 			<h5 class="card-title">Prestamo</h5>
 		</div>
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-					<InputSelect id="filtro" class="form-select" @bind-Value="Filtro"> </InputSelect>
+					<InputSelect id="filtro" class="form-select" @bind-Value="Filtro">
+						<option value="id">ID</option>
+						<option value="deudor">Deudor</option>
+						<option value="concepto"> Concepto</option>
+						<option value="Monto"> Monto</option>
+					</InputSelect>
 				</div>
 
 				<div class="col-md-3 d-flex align-items-end">
@@ -25,7 +30,7 @@
 				</div>
 
 			</div>
-			<a href="#" class="btn btn-primary"	<span class=" bi bi-plus-square mt-3"></span> Crear</a>
+			<a href="/Prestamos/Create" class="btn btn-outline-primary"	<span class=" bi bi-plus-square mt-3"></span> Crear</a>
 			<table class="table table-dark table-hover">
 				<thead class="table table-striped ">
 					<tr class="text-center">
