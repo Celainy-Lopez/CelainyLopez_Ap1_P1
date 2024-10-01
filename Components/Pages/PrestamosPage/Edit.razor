@@ -1,0 +1,77 @@
+﻿@page "/Prestamos/Edit/{PrestamoId:int}"
+@rendermode InteractiveServer
+@inject PrestamoService prestamoService
+@inject NavigationManager navigation
+
+
+<PageTitle>Editar prestamo</PageTitle>
+
+<EditForm Model="Prestamo" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+
+            <div class="card-header bg-dark text-white text-center">
+                <h5 class="card-title">Editar prestamo</h5>
+            </div>
+            <div class="card-body">
+                @*ID*@
+                <label for="id" class="form-label">ID</label>
+                <InputNumber id="id" class="form-control" @bind-Value="Prestamo.PrestamoId" readonly />
+
+                @*Deudor*@
+                <label for="deudor" class="form-label"> Deudor</label>
+                <InputText id="deudor" class="form-control" @bind-Value="Prestamo.Deudor"> </InputText>
+                <ValidationMessage For="@(()=>Prestamo.Deudor)"> </ValidationMessage>
+
+                @*Concepto*@
+                <label for="concepto" class="form-label"> Concepto</label>
+                <InputText id="concepto" class="form-control" @bind-Value="Prestamo.Concepto"> </InputText>
+                <ValidationMessage For="@(()=>Prestamo.Concepto)"> </ValidationMessage>
+
+
+                @*Monto*@
+                <label for="monto" class="form-label">Monto</label>
+                <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto" />
+                <ValidationMessage For="@(()=>Prestamo.Monto)"> </ValidationMessage>
+            </div>
+
+            <div class="card-footer">
+                @if (!string.IsNullOrEmpty(CheckMessage))
+                {
+                    <div class="alert alert-success bi bi-check2-circle"> @CheckMessage</div>
+                }
+
+
+                <a href="/Prestamos/Index"
+                   class="btn btn-outline-secondary">
+                    <span class="bi bi-arrow-left mt-3"></span> Volver
+                </a>
+                <button class="btn btn-outline-success bi bi-pencil-square" type="submit"> Modificar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int PrestamoId { get; set; }
+    public Prestamos Prestamo { get; set; } = new Prestamos();
+    public string CheckMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (PrestamoId > 0)
+        {
+            Prestamo = await prestamoService.Buscar(PrestamoId);
+        }
+    }
+
+    public async Task Modificar()
+    {
+        await prestamoService.Guardar(Prestamo);
+        CheckMessage = "El prestamo se ha modificado correctamente";
+    }
+
+}
