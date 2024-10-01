@@ -29,12 +29,12 @@
 
                 @*Monto*@
                 <label id="monto" class="form-label"> Monto</label>
-                <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto"> </InputNumber>
+                <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto" placeholder="$0.00"> </InputNumber>
                 <ValidationMessage For="@(()=>Prestamo.Monto)"> </ValidationMessage>
             </div>
             <div class="card-footer">
                 <a href="/Prestamos/Index"
-                   class="btn btn-primary">
+                   class="btn btn-outline-primary">
                     <span class="bi bi-arrow-left mt-3"></span> Volver
                 </a>
                 <button class="btn btn-outline-success bi bi-floppy" type="submit"> Guardar</button>
