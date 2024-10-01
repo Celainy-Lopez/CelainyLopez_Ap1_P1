@@ -21,7 +21,7 @@
 					</InputSelect>
 				</div>
 
-				<div class="col-md-3 d-flex align-items-end">
+				<div class="col-md-6 d-flex align-items-end">
 					<div class="input-group">
 						<InputText id="busqueda" class="form-control" @bind-Value="ValorFiltro"/>
 						<button @onclick="Buscar" class="btn btn-outline-primary bi bi-search" placeholder="Buscar">  Buscar</button>
@@ -42,6 +42,9 @@
 						<th>Concepto</th>
 						@*Monto*@
 						<th>Monto</th>
+						<th>Ver</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -55,19 +58,16 @@
 							@*Concepto*@
 							<td>@prestamo.Concepto</td>
 							@*Monto*@
-							<td>@prestamo.Monto</td>
-							<td>Ver</td>
-							<td>Editar</td>
-							<td>Eliminar</td>
+							<td>@($"{prestamo.Monto:C}")</td>
 
 							<td>
-								<a href="#" class="btn btn-outline-light bi bi-eye"></a>
+								<a href="/Prestamos/View/@prestamo.PrestamoId" class="btn btn-outline-light bi bi-eye"></a>
 							</td>
 							<td>
-								<a href="#" class="btn btn-outline-light bi bi-pencil-square"></a>
+								<a href="/Prestamos/Edit/@prestamo.PrestamoId" class="btn btn-outline-light bi bi-pencil-square"></a>
 							</td>
 							<td>
-								<a href="#" class="btn btn-outline-light bi bi-trash"></a>
+								<a href="/Prestamos/Delete/@prestamo.PrestamoId" class="btn btn-outline-light bi bi-trash"></a>
 							</td>
 
 						</tr>
