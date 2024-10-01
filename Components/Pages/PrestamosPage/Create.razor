@@ -19,12 +19,12 @@
 
                 @*Deudor*@
                 <label id="deudor" class="form-label"> Deudor</label>
-                <InputText id="deudor" class="form-control" @bind-Value="Prestamo.Deudor" placholder="Juan Perez"> </InputText>
+                <InputText id="deudor" class="form-control" @bind-Value="Prestamo.Deudor" placeholder="Juan Perez"> </InputText>
                 <ValidationMessage For="@(()=>Prestamo.Deudor)"> </ValidationMessage>
 
                 @*Concepto*@
                 <label id="concepto" class="form-label"> Concepto</label>
-                <InputText id="concepto" class="form-control" @bind-Value="Prestamo.Concepto" placholder="Prestamo para comprar una casa"> </InputText>
+                <InputText id="concepto" class="form-control" @bind-Value="Prestamo.Concepto" placeholder="Prestamo para comprar una casa"> </InputText>
                 <ValidationMessage For="@(()=>Prestamo.Concepto)"> </ValidationMessage>
 
                 @*Monto*@
