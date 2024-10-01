@@ -21,18 +21,18 @@
 
                 @*Deudor*@
                 <label for="deudor" class="form-label"> Deudor</label>
-                <InputText id="deudor" class="form-control" @bind-Value="Prestamo.Deudor"> </InputText>
+                <InputText id="deudor" class="form-control" @bind-Value="Prestamo.Deudor" @onfocus="LimpiarMensaje"> </InputText>
                 <ValidationMessage For="@(()=>Prestamo.Deudor)"> </ValidationMessage>
 
                 @*Concepto*@
                 <label for="concepto" class="form-label"> Concepto</label>
-                <InputText id="concepto" class="form-control" @bind-Value="Prestamo.Concepto"> </InputText>
+                <InputText id="concepto" class="form-control" @bind-Value="Prestamo.Concepto" @onfocus="LimpiarMensaje"> </InputText>
                 <ValidationMessage For="@(()=>Prestamo.Concepto)"> </ValidationMessage>
 
 
                 @*Monto*@
                 <label for="monto" class="form-label">Monto</label>
-                <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto" />
+                <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto" @onfocus="LimpiarMensaje" />
                 <ValidationMessage For="@(()=>Prestamo.Monto)"> </ValidationMessage>
             </div>
 
@@ -72,6 +72,11 @@
     {
         await prestamoService.Guardar(Prestamo);
         CheckMessage = "El prestamo se ha modificado correctamente";
+    }
+
+    public void LimpiarMensaje()
+    {
+        CheckMessage = string.Empty;
     }
 
 }
