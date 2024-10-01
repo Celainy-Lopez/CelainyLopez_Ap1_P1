@@ -8,23 +8,25 @@
 	<div class="card shadow-lg">
 
 		<div class="card-header text-center">
-			<h5 class="card-title">Prestamo</h5>
+			<h5 class="card-title">Prestamos</h5>
 		</div>
 		<div class="card-body">
 			<div class="row">
+				@*Filtrar*@
 				<div class="col-md-3">
 					<InputSelect id="filtro" class="form-select" @bind-Value="Filtro">
 						<option value="id">ID</option>
 						<option value="deudor">Deudor</option>
 						<option value="concepto"> Concepto</option>
-						<option value="Monto"> Monto</option>
+						<option value="monto"> Monto</option>
 					</InputSelect>
 				</div>
 
+				@*Buscar*@
 				<div class="col-md-6 d-flex align-items-end">
 					<div class="input-group">
-						<InputText id="busqueda" class="form-control" @bind-Value="ValorFiltro"/>
-						<button @onclick="Buscar" class="btn btn-outline-primary bi bi-search" placeholder="Buscar">  Buscar</button>
+						<InputText id="busqueda" class="form-control" @bind-Value="ValorFiltro" placeholder="Buscar" />
+						<button @onclick="Buscar" class="btn btn-outline-primary bi bi-search">  Buscar</button>
 					</div>
 
 				</div>
