@@ -28,10 +28,10 @@ public class PrestamoService(Context context)
 
     public async Task<bool> Eliminar(int id)
     {
-        var tecnico = await _context.Prestamos.FirstOrDefaultAsync(o => o.PrestamoId == id);
-        if(tecnico != null)
+        var prestamo = await _context.Prestamos.FirstOrDefaultAsync(o => o.PrestamoId == id);
+        if(prestamo != null)
         {
-            _context.Prestamos.Remove(tecnico);
+            _context.Prestamos.Remove(prestamo);
             return await _context.SaveChangesAsync() > 0;
         }
         return false;
@@ -41,6 +41,7 @@ public class PrestamoService(Context context)
     public async Task<List<Prestamos>> Listar(Expression<Func<Prestamos, bool>> criterio)
     {
         return await _context.Prestamos.AsNoTracking()
+            .Include(d => d.Deudor)
             .Where(criterio)
             .ToListAsync();
     }
@@ -48,7 +49,7 @@ public class PrestamoService(Context context)
     public async Task<Prestamos?> Buscar(int id)
     {
         return await _context.Prestamos
-            .AsNoTracking()
+            .Include(d => d.Deudor)
             .FirstOrDefaultAsync(o => o.PrestamoId == id);
     }
 
