@@ -1,6 +1,7 @@
 ﻿@page "/Prestamos/Edit/{PrestamoId:int}"
 @rendermode InteractiveServer
 @inject PrestamoService prestamoService
+@inject DeudorService deudorService
 @inject NavigationManager navigation
 
 
@@ -20,9 +21,16 @@
                 <InputNumber id="id" class="form-control" @bind-Value="Prestamo.PrestamoId" readonly />
 
                 @*Deudor*@
-                <label for="deudor" class="form-label"> Deudor</label>
-                <InputText id="deudor" class="form-control" @bind-Value="Prestamo.Deudor" @onfocus="LimpiarMensaje"> </InputText>
-                <ValidationMessage For="@(()=>Prestamo.Deudor)"> </ValidationMessage>
+                <label id="deudor" class="form-label"> Deudor</label>
+                <InputSelect id="deudor" class="form-select" @bind-Value="Prestamo.DeudorId">
+                    <option value="0"> Elija una opci&oacute;n</option>
+                    @foreach (var deudor in ListaDeudores)
+                    {
+                        <option value="@deudor.DeudorId"> @deudor.Nombres</option>
+
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>Prestamo.DeudorId)"> </ValidationMessage>
 
                 @*Concepto*@
                 <label for="concepto" class="form-label"> Concepto</label>
@@ -59,12 +67,14 @@
     public int PrestamoId { get; set; }
     public Prestamos Prestamo { get; set; } = new Prestamos();
     public string CheckMessage { get; set; }
+    public List<Deudores> ListaDeudores { get; set; } = new List<Deudores>();
 
     protected override async Task OnInitializedAsync()
     {
         if (PrestamoId > 0)
         {
             Prestamo = await prestamoService.Buscar(PrestamoId);
+            ListaDeudores = await deudorService.Listar(d => d.DeudorId > 0);
         }
     }
 
