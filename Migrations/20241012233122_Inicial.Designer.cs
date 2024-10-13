@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CelainyLopez_Ap1_P1.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20241008001611_Inicial")]
+    [Migration("20241012233122_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -19,6 +19,56 @@ namespace CelainyLopez_Ap1_P1.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.CobroDetalle", b =>
+                {
+                    b.Property<int>("DetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CobroId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PrestamoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float?>("ValorCobrado")
+                        .IsRequired()
+                        .HasColumnType("REAL");
+
+                    b.HasKey("DetalleId");
+
+                    b.HasIndex("CobroId");
+
+                    b.HasIndex("PrestamoId");
+
+                    b.ToTable("CobroDetalle");
+                });
+
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.Property<int>("CobroId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DeudorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<float?>("Monto")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("PrestamoId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CobroId");
+
+                    b.HasIndex("DeudorId");
+
+                    b.ToTable("Cobros");
+                });
 
             modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Deudores", b =>
                 {
@@ -80,6 +130,36 @@ namespace CelainyLopez_Ap1_P1.Migrations
                     b.ToTable("Prestamos");
                 });
 
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.CobroDetalle", b =>
+                {
+                    b.HasOne("CelainyLopez_Ap1_P1.Models.Cobros", "Cobro")
+                        .WithMany("CobroDetalle")
+                        .HasForeignKey("CobroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CelainyLopez_Ap1_P1.Models.Prestamos", "Prestamo")
+                        .WithMany()
+                        .HasForeignKey("PrestamoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cobro");
+
+                    b.Navigation("Prestamo");
+                });
+
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.HasOne("CelainyLopez_Ap1_P1.Models.Deudores", "Deudor")
+                        .WithMany()
+                        .HasForeignKey("DeudorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deudor");
+                });
+
             modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Prestamos", b =>
                 {
                     b.HasOne("CelainyLopez_Ap1_P1.Models.Deudores", "Deudor")
@@ -89,6 +169,11 @@ namespace CelainyLopez_Ap1_P1.Migrations
                         .IsRequired();
 
                     b.Navigation("Deudor");
+                });
+
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.Navigation("CobroDetalle");
                 });
 #pragma warning restore 612, 618
         }
