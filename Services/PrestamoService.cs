@@ -53,6 +53,12 @@ public class PrestamoService(Context context)
             .FirstOrDefaultAsync(o => o.PrestamoId == id);
     }
 
+    public async Task<Prestamos> BuscarDeudor(int id)
+    {
+		return await _context.Prestamos.Include(p => p.Deudor)
+			.FirstOrDefaultAsync(p => p.DeudorId == id);
+	}
+
     public async Task<bool> Guardar(Prestamos prestamo)
     {
         if(!await Existe(prestamo.PrestamoId))
