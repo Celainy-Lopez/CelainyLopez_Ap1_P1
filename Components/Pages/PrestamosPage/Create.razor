@@ -39,6 +39,11 @@
                 <label id="monto" class="form-label"> Monto</label>
                 <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto" placeholder="$0.00"> </InputNumber>
                 <ValidationMessage For="@(()=>Prestamo.Monto)"> </ValidationMessage>
+
+                @*Balance*@
+                <label id="balance" class="form-label"> Balance</label>
+                <InputNumber id="balance" class="form-control" @bind-Value="Prestamo.Balance" placeholder="$0.00"> </InputNumber>
+                <ValidationMessage For="@(()=>Prestamo.Balance)"> </ValidationMessage>
             </div>
             <div class="card-footer">
                 <a href="/Prestamos/Index"
