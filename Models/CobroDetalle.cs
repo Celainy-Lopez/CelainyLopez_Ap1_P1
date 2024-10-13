@@ -12,8 +12,9 @@ public class CobroDetalle
     public int CobroId;
     public Cobros? Cobro { get; set; }
 
-    [ForeignKey("Prestamo")]
-    public int PrestamoId;
+	[ForeignKey("Prestamo")]
+	[Range(1, int.MaxValue, ErrorMessage = "Seleccione una opción valida")]
+	public int PrestamoId;
     public Prestamos? Prestamo { get; set; }
 
     [Required(ErrorMessage = "Ingrese un valor valido")]
