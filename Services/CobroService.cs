@@ -26,24 +26,26 @@ public class CobroService(Context context)
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> Eliminar(int id)
-    {
-        var cobro = await _context.Prestamos.FirstOrDefaultAsync(o => o.PrestamoId == id);
-        if (cobro != null)
-        {
-            _context.Prestamos.Remove(cobro);
-            return await _context.SaveChangesAsync() > 0;
-        }
-        return false;
+	public async Task<bool> Eliminar(int cobroId)
+	{
+		var cobro = await _context.Cobros.FindAsync(cobroId);
+		if (cobro == null)
+		{
+			return false; 
+		}
 
-    }
+		_context.Cobros.Remove(cobro);
+		await _context.SaveChangesAsync();
+		return true;
+	}
 
-    public async Task<List<Cobros>> Listar(Expression<Func<Cobros, bool>> criterio)
+
+	public async Task<List<Cobros>> Listar(Expression<Func<Cobros, bool>> criterio)
     {
         return await _context.Cobros.AsNoTracking()
             .Include(d => d.Deudor)
-            .Include(c => c.Prestamo)
-            .Where(criterio)
+			.Include(c => c.CobroDetalle)
+			.Where(criterio)
             .ToListAsync();
     }
 
@@ -51,7 +53,7 @@ public class CobroService(Context context)
     {
         return await _context.Cobros
             .Include(d => d.Deudor)
-            .Include(c => c.Prestamo)
+            .Include(c => c.CobroDetalle)
             .FirstOrDefaultAsync(o => o.CobroId == id);
     }
 
