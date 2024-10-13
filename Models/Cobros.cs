@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,18 +11,15 @@ public class Cobros
     public int CobroId { get; set; }
 
     public DateTime? Fecha {get;set;} = DateTime.Now;
+    public int PrestamoId { get; set; } 
+
+    public float? Monto { get; set; }   
 
     [ForeignKey("Deudor")]
-    [Required(ErrorMessage = "El campo es obligatorio")]
-    [Range(1, int.MaxValue, ErrorMessage = "El id debe ser mayor que 0")]
+    [Range(1, int.MaxValue, ErrorMessage = "Seleccione una opción valida")]
     public int DeudorId { get; set; }
     public Deudores? Deudor { get; set; }
 
-
-    [ForeignKey("PrestamoId")]
-    public int PrestamoId { get; set; }
-    public Prestamos? Prestamo { get; set; }
-
-    [ForeignKey("CobroId")]
+	[ForeignKey("CobroId")]
     public ICollection<CobroDetalle> CobroDetalle { get; set; } = new List<CobroDetalle>();
 }
