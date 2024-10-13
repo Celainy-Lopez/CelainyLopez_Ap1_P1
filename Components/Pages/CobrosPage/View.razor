@@ -1,0 +1,55 @@
+﻿@page "/Cobros/View/{CobroId:int}"
+@rendermode InteractiveServer
+@inject CobroService cobroService
+@inject NavigationManager navigation
+
+<PageTitle>Detalles cobro</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		<div class="card-header">
+			<h2 class="card-title text-center">Detalles cobro</h2>
+		</div>
+		<div class="card-body">
+			<div>
+				@*Datos*@
+				<div>ID: @Cobro.CobroId</div>
+				<div>Deudor ID: @Cobro.DeudorId</div>
+				<div>Fecha: @Cobro.Fecha</div>
+				<div>Monto: @Cobro.Monto</div>
+			</div>
+			<div class="border border-success p-3 mt-3">
+				<div>
+					@foreach (var Detalles in Cobro.CobroDetalle)
+					{
+						<div>Detalle Id: @Detalles.DetalleId</div>
+						<div>Cobro ID: @Detalles.CobroId</div>
+						<div>Deudor ID: @Detalles.PrestamoId</div>
+						<div>Monto: @Detalles.ValorCobrado</div>
+
+					}
+				</div>
+			</div>
+
+		</div>
+		<div class="card-footer">
+			<a href="/Cobros/Index" class="btn btn-outline-secondary bi bi-arrow-left"> Volver</a>
+		</div>
+	</div>
+
+</div>
+@code {
+	[Parameter]
+	public int CobroId { get; set; }
+	public Cobros Cobro { get; set; } = new Cobros();
+	public List<CobroDetalle> ListDetalles { get; set; } = new List<CobroDetalle>();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		Cobro = await cobroService.Buscar(CobroId);
+		foreach(var detalle in Cobro.CobroDetalle)
+		{
+			ListDetalles.Add(detalle);
+		}
+	}
+}
