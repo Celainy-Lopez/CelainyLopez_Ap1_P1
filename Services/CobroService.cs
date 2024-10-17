@@ -14,33 +14,50 @@ public class CobroService(Context context)
         return await _context.Cobros.AnyAsync(o => o.CobroId == id);
     }
 
-    private async Task<bool> Insertar(Cobros cobro)
-    {
-        _context.Cobros.Add(cobro);
-        return await _context.SaveChangesAsync() > 0;
-    }
+	private async Task<bool> Insertar(Cobros cobro)
+	{
+		_context.Cobros.Add(cobro);
+		await AfectarPrestamo(cobro.CobroDetalle.ToArray());
+		return await _context.SaveChangesAsync() > 0;
+	}
 
-    private async Task<bool> Modificar(Cobros cobro)
+	private async Task AfectarPrestamo(CobroDetalle[] detalle, bool resta = true)
+	{
+		foreach (var item in detalle)
+		{
+			var prestamo = await _context.Prestamos.SingleAsync(p => p.PrestamoId == item.PrestamoId);
+			if (resta)
+			{
+				prestamo.Balance -= item.ValorCobrado;
+			}
+			else
+			{
+				prestamo.Balance += item.ValorCobrado;
+			}
+		}
+	}
+
+
+	private async Task<bool> Modificar(Cobros cobro)
     {
         _context.Update(cobro);
         return await _context.SaveChangesAsync() > 0;
     }
 
-	public async Task<bool> Eliminar(int cobroId)
-	{
-		var cobro = await _context.Cobros.FindAsync(cobroId);
-		if (cobro == null)
-		{
-			return false; 
-		}
+    public async Task<bool> Eliminar(int cobroId)
+    {
+		var cobro = _context.Cobros.Find(cobroId);
 
+		await AfectarPrestamo(cobro.CobroDetalle.ToArray(), false);
+
+		_context.CobroDetalle.RemoveRange(cobro.CobroDetalle);
 		_context.Cobros.Remove(cobro);
-		await _context.SaveChangesAsync();
-		return true;
+
+		var cantidad = await _context.SaveChangesAsync();
+		return cantidad > 0;
 	}
 
-
-	public async Task<List<Cobros>> Listar(Expression<Func<Cobros, bool>> criterio)
+		public async Task<List<Cobros>> Listar(Expression<Func<Cobros, bool>> criterio)
     {
         return await _context.Cobros.AsNoTracking()
             .Include(d => d.Deudor)
