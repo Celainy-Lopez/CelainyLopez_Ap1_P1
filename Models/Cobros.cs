@@ -11,9 +11,10 @@ public class Cobros
     public int CobroId { get; set; }
 
     public DateTime? Fecha {get;set;} = DateTime.Now;
-    public int PrestamoId { get; set; } 
+    public int PrestamoId { get; set; }
 
-    public float? Monto { get; set; }   
+	[Range(1, double.MaxValue, ErrorMessage = "Debe introducir un monto valido")]
+	public float? Monto { get; set; }   
 
     [ForeignKey("Deudor")]
     [Range(1, int.MaxValue, ErrorMessage = "Seleccione una opción valida")]
