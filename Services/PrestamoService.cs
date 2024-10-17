@@ -16,6 +16,7 @@ public class PrestamoService(Context context)
 
     private async Task<bool> Insertar(Prestamos prestamo)
     {
+        prestamo.Balance = prestamo.Monto;
         _context.Prestamos.Add(prestamo);
         return await _context.SaveChangesAsync() > 0;
     }
