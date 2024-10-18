@@ -7,12 +7,12 @@ namespace CelainyLopez_Ap1_P1.Services;
 
 public class CobroService(Context context)
 {
-    private readonly Context _context = context;
+	private readonly Context _context = context;
 
-    private async Task<bool> Existe(int id)
-    {
-        return await _context.Cobros.AnyAsync(o => o.CobroId == id);
-    }
+	private async Task<bool> Existe(int id)
+	{
+		return await _context.Cobros.AnyAsync(o => o.CobroId == id);
+	}
 
 	private async Task<bool> Insertar(Cobros cobro)
 	{
@@ -39,13 +39,14 @@ public class CobroService(Context context)
 
 
 	private async Task<bool> Modificar(Cobros cobro)
-    {
+	{
+        await AfectarPrestamo(cobro.CobroDetalle.ToArray());
         _context.Update(cobro);
-        return await _context.SaveChangesAsync() > 0;
-    }
+		return await _context.SaveChangesAsync() > 0;
+	}
 
-    public async Task<bool> Eliminar(int cobroId)
-    {
+	public async Task<bool> Eliminar(int cobroId)
+	{
 		var cobro = _context.Cobros.Find(cobroId);
 
 		await AfectarPrestamo(cobro.CobroDetalle.ToArray(), false);
@@ -57,33 +58,33 @@ public class CobroService(Context context)
 		return cantidad > 0;
 	}
 
-		public async Task<List<Cobros>> Listar(Expression<Func<Cobros, bool>> criterio)
-    {
-        return await _context.Cobros.AsNoTracking()
-            .Include(d => d.Deudor)
+	public async Task<List<Cobros>> Listar(Expression<Func<Cobros, bool>> criterio)
+	{
+		return await _context.Cobros.AsNoTracking()
+			.Include(d => d.Deudor)
 			.Include(c => c.CobroDetalle)
 			.Where(criterio)
-            .ToListAsync();
-    }
+			.ToListAsync();
+	}
 
-    public async Task<Cobros?> Buscar(int id)
-    {
-        return await _context.Cobros
-            .Include(d => d.Deudor)
-            .Include(c => c.CobroDetalle)
-            .FirstOrDefaultAsync(o => o.CobroId == id);
-    }
+	public async Task<Cobros?> Buscar(int id)
+	{
+		return await _context.Cobros
+			.Include(d => d.Deudor)
+			.Include(c => c.CobroDetalle)
+			.FirstOrDefaultAsync(o => o.CobroId == id);
+	}
 
-    public async Task<bool> Guardar(Cobros cobro)
-    {
-        if (!await Existe(cobro.CobroId))
-        {
-            return await Insertar(cobro);
-        }
-        else
-        {
-            return await Modificar(cobro);
-        }
+	public async Task<bool> Guardar(Cobros cobro)
+	{
+		if (!await Existe(cobro.CobroId))
+		{
+			return await Insertar(cobro);
+		}
+		else
+		{
+			return await Modificar(cobro);
+		}
 
-    }
+	}
 }
