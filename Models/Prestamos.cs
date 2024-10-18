@@ -18,8 +18,6 @@ public class Prestamos
 	[Range(0.1, float.MaxValue, ErrorMessage ="El monto debe ser mayor a 0")]
 	public float? Monto { get; set; }
 
-	[Required(ErrorMessage = "Ingrese un balance valido")]
-	[Range(0.1, float.MaxValue, ErrorMessage = "El balance debe ser mayor que 0")]
 	public float? Balance { get; set; }
 
 	[ForeignKey("Deudor")]
