@@ -11,13 +11,13 @@ public class PrestamoService(Context context)
 
     private async Task<bool> Existe(int id)
     {
-        return await _context.Prestamos.AnyAsync(o => o.PrestamoId == id);
+        return await _context.Prestamos
+            .AnyAsync(o => o.PrestamoId == id);
     }
 
     private async Task<bool> Insertar(Prestamos prestamo)
     {
-        prestamo.Balance = prestamo.Monto;
-        _context.Prestamos.Add(prestamo);
+		_context.Prestamos.Add(prestamo);
         return await _context.SaveChangesAsync() > 0;
     }
 
@@ -60,8 +60,9 @@ public class PrestamoService(Context context)
 			.FirstOrDefaultAsync(p => p.DeudorId == id);
 	}
 
-    public async Task<bool> Guardar(Prestamos prestamo)
+	public async Task<bool> Guardar(Prestamos prestamo)
     {
+        prestamo.Balance = prestamo.Monto;
         if(!await Existe(prestamo.PrestamoId))
         {
             return await Insertar(prestamo);
