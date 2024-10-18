@@ -21,7 +21,7 @@
                 @*Deudor*@
                 <label id="deudor" class="form-label"> Deudor</label>
                 <InputSelect id="deudor" class="form-select" @bind-Value="Prestamo.DeudorId"> 
-                    <option value= "0"> Elija una opci&oacute;n</option>
+                    <option value= "0" selected disabled> Elija una opci&oacute;n</option>
                     @foreach(var deudor in ListaDeudores)
                     {
                         <option value="@deudor.DeudorId"> @deudor.Nombres</option>
@@ -40,14 +40,10 @@
                 <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto" placeholder="$0.00"> </InputNumber>
                 <ValidationMessage For="@(()=>Prestamo.Monto)"> </ValidationMessage>
 
-                @*Balance*@
-                <label id="balance" class="form-label"> Balance</label>
-                <InputNumber id="balance" class="form-control" @bind-Value="Prestamo.Balance" placeholder="$0.00"> </InputNumber>
-                <ValidationMessage For="@(()=>Prestamo.Balance)"> </ValidationMessage>
             </div>
             <div class="card-footer">
                 <a href="/Prestamos/Index"
-                   class="btn btn-outline-primary">
+                   class="btn btn-outline-secondary">
                     <span class="bi bi-arrow-left mt-3"></span> Volver
                 </a>
                 <button class="btn btn-outline-success bi bi-floppy" type="submit"> Guardar</button>
