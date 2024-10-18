@@ -45,8 +45,6 @@
 						@*Monto*@
 						<th>Monto</th>
 
-						@*Balance*@
-						<th>Balance</th>
 						<th>Ver</th>
 						<th>Editar</th>
 						<th>Eliminar</th>
@@ -64,10 +62,6 @@
 							<td>@prestamo.Concepto</td>
 							@*Monto*@
 							<td>@($"{prestamo.Monto:C}")</td>
-
-							@*Balance*@
-							<td>@($"{prestamo.Balance:C}")</td>
-
 
 							<td>
 								<a href="/Prestamos/View/@prestamo.PrestamoId" class="btn btn-outline-primary bi bi-eye"></a>
