@@ -8,7 +8,7 @@
 	<div class="card shadow-lg">
 
 		<div class="card-header text-center">
-			<h5 class="card-title">Prestamos</h5>
+			<h5 class="card-title"><strong>Prestamos</strong></h5>
 		</div>
 		<div class="card-body">
 			<div class="row">
@@ -44,6 +44,7 @@
 						<th>Concepto</th>
 						@*Monto*@
 						<th>Monto</th>
+
 						<th>Ver</th>
 						<th>Editar</th>
 						<th>Eliminar</th>
@@ -56,7 +57,7 @@
 							@*ID*@
 							<td class="text-lg-start"> @prestamo.PrestamoId</td>
 							@*Deudor*@
-							<td>@prestamo.Deudor</td>
+							<td>@prestamo.Deudor.Nombres</td>
 							@*Concepto*@
 							<td>@prestamo.Concepto</td>
 							@*Monto*@
@@ -103,8 +104,8 @@
 				}
 				break;
 			case "deudor":
-				Prestamo = await prestamoService.Listar(o => o.Deudor.ToLower().Equals(ValorFiltro.ToLower()));
-				break;
+				Prestamo = await prestamoService.Listar(o => o.Deudor.Nombres.ToLower().Equals(ValorFiltro.ToLower()));
+				break; 
 			case "concepto" :
 				Prestamo = await prestamoService.Listar(o => o.Concepto.ToLower().Equals(ValorFiltro.ToLower()));
 				break;

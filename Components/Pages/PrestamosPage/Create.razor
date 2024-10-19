@@ -1,6 +1,7 @@
 ﻿@page "/Prestamos/Create"
 @rendermode InteractiveServer
 @inject PrestamoService prestamoService
+@inject DeudorService deudorService
 @inject NavigationManager navigation
 
 <PageTitle>Nuevo prestamo</PageTitle>
@@ -10,31 +11,39 @@
 	    <div class="card shadow-lg">
 
 		    <div class="card-header text-center">
-			    <h5 class="card-title">Nuevo prestamo</h5>
+                <h5 class="card-title"><strong>Nuevo prestamo</strong></h5>
 		    </div>
 		    <div class="card-body">
                 @*id*@
-                <label id="id" class="form-label"> ID</label>
+                <label id="id" class="form-label"> <strong>ID</strong></label>
                 <InputNumber id="id" class="form-control" @bind-Value="Prestamo.PrestamoId" readonly> </InputNumber>
 
                 @*Deudor*@
-                <label id="deudor" class="form-label"> Deudor</label>
-                <InputText id="deudor" class="form-control" @bind-Value="Prestamo.Deudor" placeholder="Juan Perez"> </InputText>
-                <ValidationMessage For="@(()=>Prestamo.Deudor)"> </ValidationMessage>
+                <label id="deudor" class="form-label"> <strong>Deudor</strong></label>
+                <InputSelect id="deudor" class="form-select" @bind-Value="Prestamo.DeudorId"> 
+                    <option value= "0" selected disabled> Elija una opci&oacute;n</option>
+                    @foreach(var deudor in ListaDeudores)
+                    {
+                        <option value="@deudor.DeudorId"> @deudor.Nombres</option>
+                       
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>Prestamo.DeudorId)"> </ValidationMessage>
 
                 @*Concepto*@
-                <label id="concepto" class="form-label"> Concepto</label>
+                <label id="concepto" class="form-label"> <strong>Concepto</strong></label>
                 <InputText id="concepto" class="form-control" @bind-Value="Prestamo.Concepto" placeholder="Prestamo para comprar una casa"> </InputText>
                 <ValidationMessage For="@(()=>Prestamo.Concepto)"> </ValidationMessage>
 
                 @*Monto*@
-                <label id="monto" class="form-label"> Monto</label>
+                <label id="monto" class="form-label"> <strong>Monto</strong></label>
                 <InputNumber id="monto" class="form-control" @bind-Value="Prestamo.Monto" placeholder="$0.00"> </InputNumber>
                 <ValidationMessage For="@(()=>Prestamo.Monto)"> </ValidationMessage>
+
             </div>
             <div class="card-footer">
                 <a href="/Prestamos/Index"
-                   class="btn btn-outline-primary">
+                   class="btn btn-outline-secondary">
                     <span class="bi bi-arrow-left mt-3"></span> Volver
                 </a>
                 <button class="btn btn-outline-success bi bi-floppy" type="submit"> Guardar</button>
@@ -49,6 +58,12 @@
 
 @code {
     public Prestamos Prestamo  { get; set; } = new Prestamos();
+    public List<Deudores> ListaDeudores { get; set; } = new List<Deudores>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaDeudores = await deudorService.Listar(d => d.DeudorId > 0);
+    }
 
     public async Task Crear()
     {

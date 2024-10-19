@@ -1,5 +1,6 @@
 using CelainyLopez_Ap1_P1.Components;
 using CelainyLopez_Ap1_P1.DAL;
+using CelainyLopez_Ap1_P1.Models;
 using CelainyLopez_Ap1_P1.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,8 @@ var ConStr = builder.Configuration.GetConnectionString("ConStr");
 builder.Services.AddDbContext<Context>(o => o.UseSqlite(ConStr));
 
 builder.Services.AddScoped<PrestamoService>();
+builder.Services.AddScoped<DeudorService>();
+builder.Services.AddScoped<CobroService>();
 
 var app = builder.Build();
 

@@ -1,0 +1,130 @@
+﻿@page "/Cobros/Index"
+@rendermode InteractiveServer
+@inject PrestamoService prestamoService
+@inject CobroService cobroService
+@inject NavigationManager navigation
+
+<PageTitle>Cobros</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+
+		<div class="card-header text-center">
+			<h5 class="card-title"><strong>Cobros</strong></h5>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				@*Filtrar*@
+				<div class="col-md-3">
+					<InputSelect id="filtro" class="form-select" @bind-Value="Filtro">
+						<option value="cobroId">CobroID</option>
+						<option value="deudorId">DeudorID</option>
+						<option value="fecha"> Fecha</option>
+					</InputSelect>
+				</div>
+
+				@*Buscar*@
+				<div class="col-md-6 d-flex align-items-end">
+					<div class="input-group">
+						<InputText id="busqueda" class="form-control" @bind-Value="ValorFiltro" placeholder="Buscar" />
+						<button @onclick="Buscar" class="btn btn-outline-primary bi bi-search">  Buscar</button>
+					</div>
+				</div>
+
+				<div class="col-md-2">
+					@* Campo adicional para filtro por fecha *@
+					@if (Filtro == "fecha")
+					{
+						<label for="FechaFiltro" class="form-label"><strong>Fecha</strong></label>
+						<InputDate id="FechaFiltro" class="form-control" @bind-Value="FechaFiltro" />
+					}
+				</div>
+
+			</div>
+			<a href="/Cobros/Create" class="btn btn-outline-primary" <span class=" bi bi-plus-square mt-3"></span> Crear</a>
+			<table class="table table-light table-hover">
+				<thead class="table table-striped ">
+					<tr class="text-center">
+						@*CobroId*@
+						<th class="text-lg-start"> CobroID</th>
+						@*Fecha*@
+						<th>Fecha</th>
+						@*DeudorNombre*@
+						<th>Deudor</th>
+						@*Monto*@
+						<th>Monto</th>
+
+						<th>Ver</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var cobro in Cobro)
+					{
+						<tr class="text-center">
+							@*CobroID*@
+							<td class="text-lg-start"> @cobro.CobroId</td>
+							@*Fecha*@
+							<td>@cobro.Fecha?.ToString("dd/MM/yyyy")</td>
+							@*NombreDeudor*@
+							<td> @cobro.Deudor.Nombres</td>
+							@*Monto*@
+							<td>@($"{cobro.Monto:C}")</td>
+
+							<td>
+								<a href="/Cobros/View/@cobro.CobroId" class="btn btn-outline-primary bi bi-eye"></a>
+							</td>
+							<td>
+								<a href="/Cobros/Edit/@cobro.CobroId" class="btn btn-outline-primary bi bi-pencil-square"></a>
+							</td>
+							<td>
+								<a href="/Cobros/Delete/@cobro.CobroId" class="btn btn-outline-primary bi bi-trash"></a>
+							</td>
+
+						</tr>
+					}
+				</tbody>
+
+			</table>
+		</div>
+
+	</div>
+</div>
+@code {
+	public int CobroId { get; set; }
+	public List<Cobros> Cobro = new List<Cobros>();
+	public string Filtro = "cobroId";
+	public string ValorFiltro = "";
+	public DateTime? FechaFiltro { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Cobro = await cobroService.Listar(o => true);
+	}
+
+	public async Task Buscar()
+	{
+		switch (Filtro)
+		{
+			case "cobroId":
+				if (int.TryParse(ValorFiltro, out int cobroId))
+				{
+					Cobro = await cobroService.Listar(o => o.CobroId == cobroId);
+				}
+				break;
+			case "deudorId":
+				if (int.TryParse(ValorFiltro, out int deudorId))
+				{
+					Cobro = await cobroService.Listar(o => o.DeudorId == deudorId);
+				}
+				break;
+			case "fecha":
+				if (FechaFiltro.HasValue)
+				{
+					Cobro = await cobroService.Listar(c => c.Fecha.HasValue && c.Fecha.Value.Date == FechaFiltro.Value.Date);
+				}
+				break;
+		}
+	}
+
+}

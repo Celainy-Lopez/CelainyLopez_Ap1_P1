@@ -11,12 +11,13 @@ public class PrestamoService(Context context)
 
     private async Task<bool> Existe(int id)
     {
-        return await _context.Prestamos.AnyAsync(o => o.PrestamoId == id);
+        return await _context.Prestamos
+            .AnyAsync(o => o.PrestamoId == id);
     }
 
     private async Task<bool> Insertar(Prestamos prestamo)
     {
-        _context.Prestamos.Add(prestamo);
+		_context.Prestamos.Add(prestamo);
         return await _context.SaveChangesAsync() > 0;
     }
 
@@ -28,10 +29,10 @@ public class PrestamoService(Context context)
 
     public async Task<bool> Eliminar(int id)
     {
-        var tecnico = await _context.Prestamos.FirstOrDefaultAsync(o => o.PrestamoId == id);
-        if(tecnico != null)
+        var prestamo = await _context.Prestamos.FirstOrDefaultAsync(o => o.PrestamoId == id);
+        if(prestamo != null)
         {
-            _context.Prestamos.Remove(tecnico);
+            _context.Prestamos.Remove(prestamo);
             return await _context.SaveChangesAsync() > 0;
         }
         return false;
@@ -41,6 +42,7 @@ public class PrestamoService(Context context)
     public async Task<List<Prestamos>> Listar(Expression<Func<Prestamos, bool>> criterio)
     {
         return await _context.Prestamos.AsNoTracking()
+            .Include(d => d.Deudor)
             .Where(criterio)
             .ToListAsync();
     }
@@ -48,12 +50,19 @@ public class PrestamoService(Context context)
     public async Task<Prestamos?> Buscar(int id)
     {
         return await _context.Prestamos
-            .AsNoTracking()
+            .Include(d => d.Deudor)
             .FirstOrDefaultAsync(o => o.PrestamoId == id);
     }
 
-    public async Task<bool> Guardar(Prestamos prestamo)
+    public async Task<Prestamos> BuscarDeudor(int id)
     {
+		return await _context.Prestamos.Include(p => p.Deudor)
+			.FirstOrDefaultAsync(p => p.DeudorId == id);
+	}
+
+	public async Task<bool> Guardar(Prestamos prestamo)
+    {
+        prestamo.Balance = prestamo.Monto;
         if(!await Existe(prestamo.PrestamoId))
         {
             return await Insertar(prestamo);

@@ -9,18 +9,19 @@
     <div class="card shadow-lg">
 
         <div class="card-header text-center">
-            <h5 class="card-title">Detalles prestamo</h5>
+            <h5 class="card-title"><strong>Detalles prestamo</strong></h5>
         </div> <br />
-        <div class="card-body ms-3">
-
+        <div class="card-body ms-3">    
             @*ID*@
-            <div>Prestamo ID: @Prestamo.PrestamoId</div>
-            @*Deudor*@
-            <div>Deudor: @Prestamo.Deudor</div>
+            <div><strong>Prestamo ID:</strong> @Prestamo.PrestamoId</div>
+            @*DeudorNombre*@
+            <div><strong>Deudor: </strong>@Prestamo.Deudor.Nombres</div>
+            @*Deudor Id*@
+            <div><strong>Deudor ID:</strong> @Prestamo.DeudorId</div>
             @*Concepto*@
-            <div>Concepto: @Prestamo.Concepto </div>
+            <div><strong>Concepto:</strong> @Prestamo.Concepto </div>
             @*Monto*@
-            <div>Monto: @($"{Prestamo.Monto:C}")</div>
+            <div><strong>Monto:</strong> @($"{Prestamo.Monto:C}") </div>
         </div>
 
         <div class="card-footer">

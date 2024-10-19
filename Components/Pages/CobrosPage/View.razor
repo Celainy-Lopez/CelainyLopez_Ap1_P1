@@ -1,0 +1,56 @@
+﻿@page "/Cobros/View/{CobroId:int}"
+@rendermode InteractiveServer
+@inject CobroService cobroService
+@inject NavigationManager navigation
+
+<PageTitle>Detalles cobro</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		<div class="card-header">
+			<h5 class="card-title text-center"><strong>Detalles cobro</strong></h5>
+		</div>
+		<div class="card-body">
+			<div>
+				@*Datos*@
+				<div><strong>CobroId:</strong> @Cobro.CobroId</div>
+				<div><strong>Fecha:</strong> @Cobro.Fecha</div>
+				<div><strong>DeudorId:</strong> @Cobro.DeudorId</div>
+				<div><strong>Deudor:</strong>  @Cobro.Deudor.Nombres</div>
+				<div><strong>Monto:</strong> @Cobro.Monto</div>
+			</div>
+			<div class="border border-success p-3 mt-3">
+				<div>
+					@foreach (var Detalles in Cobro.CobrosDetalle)
+					{
+						<div> <strong>DetalleId: </strong> @Detalles.DetalleId</div>
+						<div><strong>CobroId:</strong> @Detalles.CobroId</div>
+						<div><strong>Pr&eacute;stamoId:</strong> @Detalles.PrestamoId</div>
+						<div><strong>Monto:</strong> @Detalles.ValorCobrado</div>
+						<br />
+
+					}
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<a href="/Cobros/Index" class="btn btn-outline-secondary bi bi-arrow-left"> Volver</a>
+		</div>
+	</div>
+
+</div>
+@code {
+	[Parameter]
+	public int CobroId { get; set; }
+	public Cobros Cobro { get; set; } = new Cobros();
+	public List<CobrosDetalle> ListDetalles { get; set; } = new List<CobrosDetalle>();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		Cobro = await cobroService.Buscar(CobroId);
+		foreach(var detalle in Cobro.CobrosDetalle)
+		{
+			ListDetalles.Add(detalle);
+		}
+	}
+}
