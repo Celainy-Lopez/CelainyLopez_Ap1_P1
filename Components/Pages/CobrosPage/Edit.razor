@@ -132,9 +132,9 @@
 	public Cobros? Cobro { get; set; } = new Cobros();
 	public Prestamos? Prestamo { get; set; } = new Prestamos();
 	public List<Deudores> ListDeudores { get; set; } = new List<Deudores>();
-	public List<CobroDetalle> ListDetalles { get; set; } = new List<CobroDetalle>();
+	public List<CobrosDetalle> ListDetalles { get; set; } = new List<CobrosDetalle>();
 	public List<Prestamos> ListPrestamos { get; set; } = new List<Prestamos>();
-	public CobroDetalle NuevoDetalle { get; set; } = new CobroDetalle();
+	public CobrosDetalle NuevoDetalle { get; set; } = new CobrosDetalle();
 	public string? Nombre { get; set; }
 	public string ErrorMessage { get; set; }
 	public string CheckMessage { get; set; }
@@ -144,7 +144,7 @@
 
 		Cobro = await cobroService.Buscar(CobroId);
 		ListPrestamos = await prestamoService.Listar(p => p.DeudorId == Cobro.DeudorId);
-		foreach (var detalle in Cobro.CobroDetalle)
+		foreach (var detalle in Cobro.CobrosDetalle)
 		{
 			ListDetalles.Add(detalle);
 		}
@@ -186,7 +186,7 @@
 			NuevoDetalle.CobroId = Cobro.CobroId;
 			ListDetalles.Add(NuevoDetalle);
 			Cobro.Monto = ListDetalles.Sum(d => d.ValorCobrado);
-			NuevoDetalle = new CobroDetalle();
+			NuevoDetalle = new CobrosDetalle();
 			CheckMessage = "El detalle se ha agregado correctamente";
 		}
 	}
@@ -223,12 +223,12 @@
 			else
 			{
 				ListPrestamos = await prestamoService.Listar(p => p.DeudorId == Cobro.DeudorId);
-				Cobro.Monto = Cobro.CobroDetalle.Sum(d => d.ValorCobrado);
+				Cobro.Monto = Cobro.CobrosDetalle.Sum(d => d.ValorCobrado);
 			}
 		}
 	}
 
-	public async Task Eliminar(CobroDetalle detalle)
+	public async Task Eliminar(CobrosDetalle detalle)
 	{
 		ListDetalles.Remove(detalle);
 		NuevoDetalle.ValorCobrado = detalle.ValorCobrado;
@@ -238,7 +238,7 @@
 
 	public async Task Modificar()
 	{
-		Cobro.CobroDetalle = new List<CobroDetalle>();
+		Cobro.CobrosDetalle = new List<CobrosDetalle>();
 		if (ListDetalles == null || !ListDetalles.Any())
 		{
 			ErrorMessage = "Debe agregar al menos un detalle de cobro antes de guardar.";
@@ -246,12 +246,12 @@
 		}
 		foreach (var detalle in ListDetalles)
 		{
-			Cobro.CobroDetalle.Add(detalle);
+			Cobro.CobrosDetalle.Add(detalle);
 
 			var prestamo = await prestamoService.Buscar(detalle.PrestamoId);
 			if (prestamo != null)
 			{
-				var cobroAnterior = Cobro.CobroDetalle.FirstOrDefault(d => d.PrestamoId == detalle.PrestamoId);
+				var cobroAnterior = Cobro.CobrosDetalle.FirstOrDefault(d => d.PrestamoId == detalle.PrestamoId);
 				if (cobroAnterior != null)
 				{
 					prestamo.Balance += cobroAnterior.ValorCobrado;
@@ -261,7 +261,7 @@
 			}
 		}
 
-		Cobro.Monto = Cobro.CobroDetalle.Sum(d => d.ValorCobrado);
+		Cobro.Monto = Cobro.CobrosDetalle.Sum(d => d.ValorCobrado);
 
 		var modificado = await cobroService.Guardar(Cobro);
 		if (modificado)

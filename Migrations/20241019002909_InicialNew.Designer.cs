@@ -11,39 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CelainyLopez_Ap1_P1.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20241012233122_Inicial")]
-    partial class Inicial
+    [Migration("20241019002909_InicialNew")]
+    partial class InicialNew
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
-
-            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.CobroDetalle", b =>
-                {
-                    b.Property<int>("DetalleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CobroId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PrestamoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<float?>("ValorCobrado")
-                        .IsRequired()
-                        .HasColumnType("REAL");
-
-                    b.HasKey("DetalleId");
-
-                    b.HasIndex("CobroId");
-
-                    b.HasIndex("PrestamoId");
-
-                    b.ToTable("CobroDetalle");
-                });
 
             modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Cobros", b =>
                 {
@@ -68,6 +43,31 @@ namespace CelainyLopez_Ap1_P1.Migrations
                     b.HasIndex("DeudorId");
 
                     b.ToTable("Cobros");
+                });
+
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.CobrosDetalle", b =>
+                {
+                    b.Property<int>("DetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CobroId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PrestamoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float?>("ValorCobrado")
+                        .IsRequired()
+                        .HasColumnType("REAL");
+
+                    b.HasKey("DetalleId");
+
+                    b.HasIndex("CobroId");
+
+                    b.HasIndex("PrestamoId");
+
+                    b.ToTable("CobrosDetalle");
                 });
 
             modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Deudores", b =>
@@ -109,7 +109,6 @@ namespace CelainyLopez_Ap1_P1.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<float?>("Balance")
-                        .IsRequired()
                         .HasColumnType("REAL");
 
                     b.Property<string>("Concepto")
@@ -130,10 +129,21 @@ namespace CelainyLopez_Ap1_P1.Migrations
                     b.ToTable("Prestamos");
                 });
 
-            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.CobroDetalle", b =>
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Cobros", b =>
+                {
+                    b.HasOne("CelainyLopez_Ap1_P1.Models.Deudores", "Deudor")
+                        .WithMany()
+                        .HasForeignKey("DeudorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deudor");
+                });
+
+            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.CobrosDetalle", b =>
                 {
                     b.HasOne("CelainyLopez_Ap1_P1.Models.Cobros", "Cobro")
-                        .WithMany("CobroDetalle")
+                        .WithMany("CobrosDetalle")
                         .HasForeignKey("CobroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -149,17 +159,6 @@ namespace CelainyLopez_Ap1_P1.Migrations
                     b.Navigation("Prestamo");
                 });
 
-            modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Cobros", b =>
-                {
-                    b.HasOne("CelainyLopez_Ap1_P1.Models.Deudores", "Deudor")
-                        .WithMany()
-                        .HasForeignKey("DeudorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Deudor");
-                });
-
             modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Prestamos", b =>
                 {
                     b.HasOne("CelainyLopez_Ap1_P1.Models.Deudores", "Deudor")
@@ -173,7 +172,7 @@ namespace CelainyLopez_Ap1_P1.Migrations
 
             modelBuilder.Entity("CelainyLopez_Ap1_P1.Models.Cobros", b =>
                 {
-                    b.Navigation("CobroDetalle");
+                    b.Navigation("CobrosDetalle");
                 });
 #pragma warning restore 612, 618
         }

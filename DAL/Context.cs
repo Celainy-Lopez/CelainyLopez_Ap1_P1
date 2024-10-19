@@ -10,7 +10,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
 
     public DbSet<Cobros> Cobros { get; set; }
 
-	public DbSet<CobroDetalle> CobroDetalle { get; set; }
+	public DbSet<CobrosDetalle> CobrosDetalle { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

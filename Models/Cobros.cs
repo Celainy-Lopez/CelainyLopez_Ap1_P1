@@ -22,5 +22,5 @@ public class Cobros
     public Deudores? Deudor { get; set; }
 
 	[ForeignKey("CobroId")]
-    public ICollection<CobroDetalle> CobroDetalle { get; set; } = new List<CobroDetalle>();
+    public ICollection<CobrosDetalle> CobrosDetalle { get; set; } = new List<CobrosDetalle>();
 }

@@ -128,9 +128,9 @@
 	public Cobros? Cobro { get; set; } = new Cobros();
 	public Prestamos? Prestamo { get; set; } = new Prestamos();
 	public List<Deudores> ListDeudores { get; set; } = new List<Deudores>();
-	public List<CobroDetalle> ListDetalles { get; set; } = new List<CobroDetalle>();
+	public List<CobrosDetalle> ListDetalles { get; set; } = new List<CobrosDetalle>();
 	public List<Prestamos> ListPrestamos { get; set; } = new List<Prestamos>();
-	public CobroDetalle NuevoDetalle { get; set; } = new CobroDetalle();
+	public CobrosDetalle NuevoDetalle { get; set; } = new CobrosDetalle();
 	public string? Nombre { get; set; }
 	public string ErrorMessage { get; set; }
 	public string CheckMessage { get; set; }
@@ -172,7 +172,7 @@
 			NuevoDetalle.CobroId = Cobro.CobroId;
 			ListDetalles.Add(NuevoDetalle);
 			Cobro.Monto = ListDetalles.Sum(d => d.ValorCobrado);
-			NuevoDetalle = new CobroDetalle();
+			NuevoDetalle = new CobrosDetalle();
 			CheckMessage = "El detalle se ha agregado correctamente";
 		}
 	}
@@ -213,7 +213,7 @@
 		}
 	}
 
-	public async Task Eliminar(CobroDetalle detalle)
+	public async Task Eliminar(CobrosDetalle detalle)
 	{
 		ListDetalles.Remove(detalle);
 		NuevoDetalle.ValorCobrado = detalle.ValorCobrado;
@@ -231,7 +231,7 @@
 
 		foreach (var detalle in ListDetalles)
 		{
-			Cobro.CobroDetalle.Add(detalle);
+			Cobro.CobrosDetalle.Add(detalle);
 		}
 		await cobroService.Guardar(Cobro);
 		navigation.NavigateTo("/Cobros/Index");

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CelainyLopez_Ap1_P1.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class InicialNew : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,7 @@ namespace CelainyLopez_Ap1_P1.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Concepto = table.Column<string>(type: "TEXT", nullable: false),
                     Monto = table.Column<float>(type: "REAL", nullable: false),
-                    Balance = table.Column<float>(type: "REAL", nullable: false),
+                    Balance = table.Column<float>(type: "REAL", nullable: true),
                     DeudorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -71,7 +71,7 @@ namespace CelainyLopez_Ap1_P1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CobroDetalle",
+                name: "CobrosDetalle",
                 columns: table => new
                 {
                     DetalleId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -82,15 +82,15 @@ namespace CelainyLopez_Ap1_P1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CobroDetalle", x => x.DetalleId);
+                    table.PrimaryKey("PK_CobrosDetalle", x => x.DetalleId);
                     table.ForeignKey(
-                        name: "FK_CobroDetalle_Cobros_CobroId",
+                        name: "FK_CobrosDetalle_Cobros_CobroId",
                         column: x => x.CobroId,
                         principalTable: "Cobros",
                         principalColumn: "CobroId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CobroDetalle_Prestamos_PrestamoId",
+                        name: "FK_CobrosDetalle_Prestamos_PrestamoId",
                         column: x => x.PrestamoId,
                         principalTable: "Prestamos",
                         principalColumn: "PrestamoId",
@@ -108,19 +108,19 @@ namespace CelainyLopez_Ap1_P1.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CobroDetalle_CobroId",
-                table: "CobroDetalle",
-                column: "CobroId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CobroDetalle_PrestamoId",
-                table: "CobroDetalle",
-                column: "PrestamoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Cobros_DeudorId",
                 table: "Cobros",
                 column: "DeudorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CobrosDetalle_CobroId",
+                table: "CobrosDetalle",
+                column: "CobroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CobrosDetalle_PrestamoId",
+                table: "CobrosDetalle",
+                column: "PrestamoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prestamos_DeudorId",
@@ -132,7 +132,7 @@ namespace CelainyLopez_Ap1_P1.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CobroDetalle");
+                name: "CobrosDetalle");
 
             migrationBuilder.DropTable(
                 name: "Cobros");

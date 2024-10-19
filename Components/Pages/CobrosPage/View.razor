@@ -20,7 +20,7 @@
 			</div>
 			<div class="border border-success p-3 mt-3">
 				<div>
-					@foreach (var Detalles in Cobro.CobroDetalle)
+					@foreach (var Detalles in Cobro.CobrosDetalle)
 					{
 						<div> <strong>DetalleId: </strong> @Detalles.DetalleId</div>
 						<div><strong>CobroId:</strong> @Detalles.CobroId</div>
@@ -42,13 +42,13 @@
 	[Parameter]
 	public int CobroId { get; set; }
 	public Cobros Cobro { get; set; } = new Cobros();
-	public List<CobroDetalle> ListDetalles { get; set; } = new List<CobroDetalle>();
+	public List<CobrosDetalle> ListDetalles { get; set; } = new List<CobrosDetalle>();
 
 
 	protected override async Task OnInitializedAsync()
 	{
 		Cobro = await cobroService.Buscar(CobroId);
-		foreach(var detalle in Cobro.CobroDetalle)
+		foreach(var detalle in Cobro.CobrosDetalle)
 		{
 			ListDetalles.Add(detalle);
 		}
