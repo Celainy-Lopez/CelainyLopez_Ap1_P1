@@ -14,50 +14,54 @@
 				<h5 class="card-title text-center">Nuevo cobro</h5>
 			</div>
 			<div class="card-body">
-				@*Deudor*@
-				<label for="deudor" class="form-label"> Deudor </label>
-				<div class="input-group">
-					<InputSelect id="deudor" class="form-select " @bind-Value="Cobro.DeudorId" @onfocus="LimpiarMensaje">
-						<option value="0">Seleccione un deudor</option>
-						@foreach (var deudor in ListDeudores)
-						{
-							<option value="@deudor.DeudorId">@deudor.Nombres</option>
-						}
-					</InputSelect>
-					<button type="button" @onclick="Buscar" class="btn btn-outline-primary bi bi-search"></button>
+
+				@* CobroId *@
+				<div class="col-7">
+					<label class="form-label"><strong>CobroId</strong></label>
+					<InputNumber class="form-control" @bind-Value="Cobro.CobroId" readonly></InputNumber>
 				</div>
-				<ValidationMessage For="@(() => Cobro.DeudorId)" />
+
+				@*Deudor*@
+				<div class="mb-3">
+					<label for="deudor" class="form-label"><strong>Deudor</strong> </label>
+					<div class="input-group">
+						<InputSelect id="deudor" class="form-select " @bind-Value="Cobro.DeudorId" @onfocus="LimpiarMensaje">
+							<option value="0" selected disabled>Seleccione un deudor</option>
+							@foreach (var deudor in ListDeudores)
+							{
+								<option value="@deudor.DeudorId">@deudor.Nombres</option>
+							}
+						</InputSelect>
+						<button type="button" @onclick="Buscar" class="btn btn-outline-primary bi bi-arrow-clockwise"> Buscar</button>
+					</div>
+					<ValidationMessage For="@(() => Cobro.DeudorId)" />
+				</div>
 
 				@*Fecha*@
-				<label for="fecha"class="form-label">Fecha</label>
-				<InputDate id="fecha" class="form-control" @bind-Value="Cobro.Fecha"  readonly></InputDate>
-
-				@*MontoPrestamo*@
-				<label for="monto" class="form-label"> Monto</label>
-				<InputNumber id="monto" class="form-control" @bind-Value="Cobro.Monto" readonly></InputNumber>
+				<div class="mb-3">
+					<label for="fecha" class="form-label">Fecha</label>
+					<InputDate id="fecha" class="form-control" @bind-Value="Cobro.Fecha"></InputDate>
+				</div>
 
 				@*DetallesCobro*@
 				<div class="border border-success p-3 mt-3">
+					<h5> Detalles del cobro</h5>
 					<div class="row">
-						@*Nombre*@
-						<div class="col-md-4">
-							<label for="detalles" class="form-label">Deudor</label>
-							<InputText id="detalles" class="form-control" @bind-Value="Nombre"  readonly></InputText>
-						</div>
 						@*Prestamo*@
 						<div class="col-md-6">
 							<label for="prestamo" class="form-label">Prestamos</label>
 							<div class="input-group">
 								<InputSelect id="prestamo" class="form-select " @bind-Value="NuevoDetalle.PrestamoId" @onfocus="LimpiarMensaje">
-									<option value="0">Elija una opci&oacute;n</option>
+									<option value="0" selected disabled>-- Seleccione un pr&eacute;stamo --</option>
 									@foreach (var prestamo in ListPrestamos)
 									{
-										<option value="@prestamo.PrestamoId">@prestamo.Concepto</option>
+										<option value="@prestamo.PrestamoId"> @prestamo.PrestamoId - @prestamo.Concepto (@prestamo.Balance)</option>
 									}
 								</InputSelect>
 								<ValidationMessage For="@(() => NuevoDetalle.PrestamoId)" />
 								<button type="button" @onclick=" ()=> BuscarMontoPrestamo(NuevoDetalle.PrestamoId)" class="btn btn-outline-primary bi bi-search"> </button>
 							</div>
+
 						</div>
 
 						@*ValorCobrado*@
@@ -66,7 +70,7 @@
 							<InputNumber id="valorCobrado" class="form-control" @bind-Value="NuevoDetalle.ValorCobrado" placeholder="$0.00" @onfocus="LimpiarMensaje"></InputNumber>
 							<ValidationMessage For="@(() => NuevoDetalle.ValorCobrado)" />
 						</div>
-						<div class="col-md-4 mt-3">
+						<div class="col-md-3 mt-3">
 							<button type="button" class="btn btn-outline-success bi bi-plus-square mt-3" @onclick="AgregarDetalle"> Agregar Detalle</button>
 
 						</div>
@@ -74,26 +78,30 @@
 					<table class="table table-light">
 						<thead class="table table-striped">
 							<tr class="Text-center">
-								<th>Nombre</th>
-								<th>Prestamo</th>
+								<th>Pr&eacute;stamo</th>
 								<th>Valor cobrado</th>
-								<th>Eliminar</th>
+								<th>Remover</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach (var Detalle in ListDetalles)
+							@foreach (var detalle in ListDetalles)
 							{
-								<tr class="Text-center">
-									<th>@Nombre</th>
-									<th>@Detalle.PrestamoId</th>
-									<th>@Detalle.ValorCobrado</th>
+								<tr>
+									<th>@detalle.PrestamoId</th>
+									<th>@detalle.ValorCobrado</th>
 									<th>
-										<button type="button" @onclick=" ()=> Eliminar(Detalle)" class="btn btn-outline-danger bi bi-trash"> Eliminar</button>
+										<button type="button" @onclick=" ()=> Eliminar(detalle)" class="btn btn-outline-danger bi bi-trash"> </button>
 									</th>
 								</tr>
 							}
 						</tbody>
 					</table>
+					@*Monto*@
+					<div class="col-md-4 offset-8">
+						<label class="form-label"><strong>Monto</strong></label>
+						<InputNumber class="form-control text-end" @bind-Value="Cobro.Monto" placeholder="$0.00"> @Cobro.Monto</InputNumber>
+						<ValidationMessage For="(() => Cobro.Monto)" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -108,7 +116,7 @@
 				<div class="alert alert-success bi bi-check2-circle"> @CheckMessage</div>
 			}
 
-			<a href="/Cobros/Index" class="btn btn-outline-primary bi bi-arrow-left mt-2">Volver</a>
+			<a href="/Cobros/Index" class="btn btn-outline-secondary bi bi-arrow-left mt-2">Volver</a>
 			<button type="submit" class="btn btn-outline-success bi bi-floppy mt-2"> Guardar</button>
 		</div>
 	</div>
@@ -124,7 +132,7 @@
 	public List<Prestamos> ListPrestamos { get; set; } = new List<Prestamos>();
 	public CobroDetalle NuevoDetalle { get; set; } = new CobroDetalle();
 	public string? Nombre { get; set; }
-	public string ErrorMessage{ get; set; }
+	public string ErrorMessage { get; set; }
 	public string CheckMessage { get; set; }
 
 	protected override async Task OnInitializedAsync()
@@ -134,34 +142,40 @@
 
 	public async Task AgregarDetalle()
 	{
-		if(Cobro.DeudorId == 0)
+		if (Cobro.DeudorId == 0)
 		{
 			ErrorMessage = "Debe seleccionar un deudor";
 		}
-		else if (NuevoDetalle.ValorCobrado <= 0 )
+		else if (NuevoDetalle.ValorCobrado <= 0)
 		{
 			ErrorMessage = "El valor cobrado debe ser mayor que 0.";
-			return; 
+			return;
 		}
-		else if(NuevoDetalle.ValorCobrado == null)
+		else if (NuevoDetalle.ValorCobrado == null)
 		{
 			ErrorMessage = "Por favor ingrese el valor cobrado";
 			return;
 		}
-		else if(NuevoDetalle.PrestamoId == 0)
+		else if (NuevoDetalle.PrestamoId == 0)
 		{
 			ErrorMessage = "Debe seleccionar un prestamo";
+			return;
+		}
+		var prestamoSeleccionado = ListPrestamos.FirstOrDefault(p => p.PrestamoId == NuevoDetalle.PrestamoId);
+		if (NuevoDetalle.ValorCobrado > prestamoSeleccionado.Balance)
+		{
+			ErrorMessage = $"El valor cobrado no puede ser mayor que el balance del préstamo ({prestamoSeleccionado.Balance:C}).";
 			return;
 		}
 		else
 		{
 			NuevoDetalle.CobroId = Cobro.CobroId;
 			ListDetalles.Add(NuevoDetalle);
+			Cobro.Monto = ListDetalles.Sum(d => d.ValorCobrado);
 			NuevoDetalle = new CobroDetalle();
 			CheckMessage = "El detalle se ha agregado correctamente";
 		}
 	}
-
 
 	public async Task BuscarMontoPrestamo(int id)
 	{
@@ -173,7 +187,7 @@
 
 		else
 		{
-			ErrorMessage = "Debe seleccionar un deudor"; 
+			ErrorMessage = "Debe seleccionar un deudor";
 		}
 
 	}
@@ -187,15 +201,14 @@
 		}
 		else
 		{
-			Nombre = Prestamo?.Deudor.Nombres;
-			if(Nombre == null)
+			if (Prestamo?.Deudor.Nombres == null)
 			{
 				ErrorMessage = "El deudor seleccionado no tiene ningun cobro pendiente";
 			}
 			else
 			{
 				ListPrestamos = await prestamoService.Listar(p => p.DeudorId == Cobro.DeudorId);
-				Cobro.Monto = Prestamo.Monto;
+				Cobro.Monto = Prestamo.Balance;
 			}
 		}
 	}
@@ -210,6 +223,12 @@
 
 	public async Task Crear()
 	{
+		if (ListDetalles == null || !ListDetalles.Any())
+		{
+			ErrorMessage = "Debe agregar al menos un detalle de cobro antes de guardar.";
+			return;
+		}
+
 		foreach (var detalle in ListDetalles)
 		{
 			Cobro.CobroDetalle.Add(detalle);
@@ -223,4 +242,4 @@
 		ErrorMessage = string.Empty;
 		CheckMessage = string.Empty;
 	}
-}
+} 
