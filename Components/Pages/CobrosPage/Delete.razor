@@ -13,19 +13,21 @@
 			<h5 class="card-title">¿Seguro de que deseas eliminar el cobro?</h5>
 			<div>
 				@*Datos*@
-				<div>ID: @Cobro.CobroId</div>
-				<div>Deudor ID: @Cobro.DeudorId</div>
-				<div>Fecha: @Cobro.Fecha</div>
-				<div>Monto: @Cobro.Monto</div>
+				<div><strong>CobroId:</strong> @Cobro.CobroId</div>
+				<div><strong>Fecha:</strong> @Cobro.Fecha</div>
+				<div><strong>DeudorId:</strong> @Cobro.DeudorId</div>
+				<div><strong>Deudor:</strong>  @Cobro.Deudor.Nombres</div>
+				<div><strong>Monto:</strong> @Cobro.Monto</div>
 			</div>
 			<div class="border border-success p-3 mt-3">
 				<div>
 					@foreach (var Detalles in Cobro.CobroDetalle)
 					{
-						<div>Detalle Id: @Detalles.DetalleId</div>
-						<div>Cobro ID: @Detalles.CobroId</div>
-						<div>Deudor ID: @Detalles.PrestamoId</div>
-						<div>Monto: @Detalles.ValorCobrado</div>
+						<div> <strong>DetalleId: </strong> @Detalles.DetalleId</div>
+						<div><strong>CobroId:</strong> @Detalles.CobroId</div>
+						<div><strong>Pr&eacute;stamoId:</strong> @Detalles.PrestamoId </div>
+						<div><strong>Monto:</strong> @Detalles.ValorCobrado</div>
+						<br />
 
 					}
 				</div>
@@ -53,7 +55,7 @@
 
 	public async Task Eliminar()
 	{
-		var eliminar = await cobroService.Eliminar(CobroId);
+		var eliminar = await cobroService.Eliminar(Cobro.CobroId);
 		if (eliminar)
 		{
 			navigation.NavigateTo("/Cobros/Index");
