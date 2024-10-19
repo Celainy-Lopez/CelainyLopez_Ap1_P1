@@ -46,14 +46,12 @@
 					<tr class="text-center">
 						@*CobroId*@
 						<th class="text-lg-start"> CobroID</th>
-						@*Monto*@
-						<th>Monto</th>
 						@*Fecha*@
 						<th>Fecha</th>
-						@*DeudorID*@
-						<th class="text-lg-start">DeudorID</th>
 						@*DeudorNombre*@
-						<th> Deudor nombre</th>
+						<th>Deudor</th>
+						@*Monto*@
+						<th>Monto</th>
 
 						<th>Ver</th>
 						<th>Editar</th>
@@ -66,14 +64,12 @@
 						<tr class="text-center">
 							@*CobroID*@
 							<td class="text-lg-start"> @cobro.CobroId</td>
-							@*Monto*@
-							<td>@($"{cobro.Monto:C}")</td>
 							@*Fecha*@
 							<td>@cobro.Fecha?.ToString("dd/MM/yyyy")</td>
-							@*DeudorID*@
-							<td class="text-lg-start">@cobro.DeudorId</td>
 							@*NombreDeudor*@
 							<td> @cobro.Deudor.Nombres</td>
+							@*Monto*@
+							<td>@($"{cobro.Monto:C}")</td>
 
 							<td>
 								<a href="/Cobros/View/@cobro.CobroId" class="btn btn-outline-primary bi bi-eye"></a>
