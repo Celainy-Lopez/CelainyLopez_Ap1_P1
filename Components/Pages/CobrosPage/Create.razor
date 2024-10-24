@@ -99,10 +99,12 @@
 
 					<hr />
 					@*Monto*@
-					<div class="col-md-4 offset-8">
-						<label class="form-label"><strong>Monto</strong></label>
-						<InputNumber class="form-control text-end" @bind-Value="Cobro.Monto" placeholder="$0.00"> @Cobro.Monto</InputNumber>
-						<ValidationMessage For="(() => Cobro.Monto)" />
+					<div class="row">
+						<div class="col-md-4 offset-8">
+							<label class="form-label"><strong>Monto</strong></label>
+							<InputNumber class="form-control text-end" @bind-Value="Cobro.Monto" placeholder="$0.00"> @Cobro.Monto</InputNumber>
+							<ValidationMessage For="(() => Cobro.Monto)" />
+						</div>
 					</div>
 				</div>
 			</div>
