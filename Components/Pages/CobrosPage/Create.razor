@@ -5,8 +5,8 @@
 @inject CobroService cobroService
 @inject NavigationManager navigation
 
-<PageTitle> Nuevo cobro</PageTitle>
-<EditForm Model="Cobro" OnValidSubmit="Crear">
+<PageTitle> Crear cobros</PageTitle>
+<EditForm Model="Cobro" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
 	<div class="container">
 		<div class="card shadow-lg">
@@ -221,7 +221,7 @@
 	}
 
 
-	public async Task Crear()
+	public async Task Guardar()
 	{
 		if (ListDetalles == null || !ListDetalles.Any())
 		{
