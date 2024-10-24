@@ -21,6 +21,12 @@
 					<InputNumber class="form-control" @bind-Value="Cobro.CobroId" readonly></InputNumber>
 				</div>
 
+				@*Fecha*@
+				<div class="mb-3">
+					<label for="fecha" class="form-label"><strong>Fecha</strong></label>
+					<InputDate id="fecha" class="form-control" @bind-Value="Cobro.Fecha"></InputDate>
+				</div>
+
 				@*Deudor*@
 				<div class="mb-3">
 					<label for="deudor" class="form-label"><strong>Deudor</strong> </label>
@@ -35,12 +41,6 @@
 						<button type="button" @onclick="Buscar" class="btn btn-outline-primary bi bi-arrow-clockwise"> Buscar</button>
 					</div>
 					<ValidationMessage For="@(() => Cobro.DeudorId)" />
-				</div>
-
-				@*Fecha*@
-				<div class="mb-3">
-					<label for="fecha" class="form-label"><strong>Fecha</strong></label>
-					<InputDate id="fecha" class="form-control" @bind-Value="Cobro.Fecha"></InputDate>
 				</div>
 
 				@*DetallesCobro*@
